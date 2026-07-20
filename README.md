@@ -18,6 +18,18 @@ The app runs four analytical workflows end-to-end, plus an agentic process view:
 A **region toggle** (North America / Asia Pacific / International / SCF-Global)
 rescales every module so the whole dashboard stays interactive across regions.
 
+## Branding
+
+Styled to Standard Industries' *modern industrialism* identity:
+
+- **Accent red** `#ed2a37` · **secondary gray** `#91999f` · **graphite** `#1f2328`
+- Industrial grotesque type (Archivo display / Inter UI)
+- Co-branded header lockup (Standard Industries corporate mark + BS Flux Sol product name)
+
+The logo mark in `src/components/StandardLogo.jsx` is a brand-aligned
+representation (correct palette + accent), not the trademarked vector artwork.
+Brand elements are included for internal-tool alignment on a synthetic demo.
+
 ## Tech
 
 - [Vite](https://vite.dev/) + [React 18](https://react.dev/)
