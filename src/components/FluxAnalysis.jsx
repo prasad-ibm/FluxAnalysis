@@ -209,15 +209,16 @@ export default function FluxAnalysis({ region }) {
 
 function shortName(desc) {
   const map = {
-    'Accounts Payable (Trade)': 'AP Trade',
-    'Accounts Receivable (Trade)': 'AR Trade',
-    'Accounts Receivable (Other – Accrued)': 'AR Accrued',
-    'Prepaid Expenses (Short-Term)': 'Prepaid',
-    'Accrued Alcohol Tax': 'Excise Tax',
-    'Advances Received (Deferred Income)': 'Deferred Inc',
-    'Finished Goods & Purchased Goods': 'Fin. Goods',
-    'Accrued Expenses': 'Accrued Exp',
-    'Provision for Bonus': 'Bonus Prov',
+    'Accounts Payable & Accrued Construction': 'AP & Constr',
+    'Customer Accounts Receivable': 'Customer AR',
+    'Accrued Unbilled Revenue': 'Unbilled Rev',
+    'Reg Asset – Storm Cost Deferral': 'Storm Defrl',
+    'Reg Liability – Revenue Refund': 'Rev Refund',
+    'Contributions in Aid of Construction': 'CIAC',
+    'Fuel Stock & Materials': 'Fuel Stock',
+    'Accrued Expenses (Interest & Payroll)': 'Accrued Exp',
+    'Accrued Pension / OPEB': 'Pension/OPEB',
+    'Reg Asset – Deferred Fuel (DFCR)': 'Def. Fuel',
   }
   return map[desc] || desc.slice(0, 12)
 }

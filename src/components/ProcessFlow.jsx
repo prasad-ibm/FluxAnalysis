@@ -11,15 +11,15 @@ const LEGEND = [
 ]
 
 const SIM_STEPS = [
-  'Orchestrator · planning BS Flux workflow for 4 regions…',
-  'Data Extractor · connecting to RAC House (WD3/WD4)…',
-  'Data Extractor · downloaded 4 region files · 13 accounts parsed',
+  'Orchestrator · planning BS Flux workflow for 4 operating companies…',
+  'Data Extractor · connecting to source ledger / RAC House (WD3/WD4)…',
+  'Data Extractor · downloaded 4 OpCo ledgers · 13 accounts parsed',
   'Data Validator · completeness 100% · 0 missing entities',
   'RAC Connector · live connection cached · auth OK',
   'Variance Agent · computed Act vs Budget & Act vs PY · 13 lines',
   'Variance Agent · flagged 11 material variances (>$0.5M)',
-  'Benchmark Agent · seasonality + peer benchmarks applied',
-  'Anomaly Agent · multi-model pass · 5 anomalies · 2 high risk',
+  'Benchmark Agent · seasonality + peer-OpCo benchmarks applied',
+  'Anomaly Agent · multi-model pass · storm-deferral & unbilled-revenue outliers',
   'Anomaly Agent · z-score, seasonal & trend-break models complete',
   'Commentary Agent · drafted commentary for 8 material variances',
   'Review Agent · scored drafts · routed to account owners',

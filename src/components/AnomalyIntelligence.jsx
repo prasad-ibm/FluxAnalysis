@@ -162,9 +162,9 @@ export default function AnomalyIntelligence({ region }) {
           <div className="panel-pad">
             {REGIONAL_BENCHMARK.map((b) => {
               const vals = [
-                { r: 'NA', v: b.na, c: '#1f2328' },
-                { r: 'APAC', v: b.apac, c: '#91999f' },
-                { r: 'INTL', v: b.intl, c: '#ed2a37' },
+                { r: 'ELEC', v: b.na, c: '#1f2328' },
+                { r: 'GAS', v: b.apac, c: '#91999f' },
+                { r: 'WATER', v: b.intl, c: '#ed2a37' },
               ]
               const max = Math.max(...vals.map((x) => x.v))
               return (

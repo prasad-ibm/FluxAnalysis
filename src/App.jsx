@@ -34,7 +34,7 @@ export default function App() {
         <div className="appbar-spacer" />
         <div className="period-chip">📅 {PERIOD}</div>
         <div className="region-wrap">
-          <span className="region-label">Region</span>
+          <span className="region-label">Operating Co</span>
           <select className="region-select" value={regionCode} onChange={(e) => setRegionCode(e.target.value)}>
             {REGIONS.map((r) => <option key={r.code} value={r.code}>{r.label}</option>)}
           </select>
