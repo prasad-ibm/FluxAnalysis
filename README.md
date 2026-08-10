@@ -15,19 +15,22 @@ The app runs four analytical workflows end-to-end, plus an agentic process view:
 | **What-If Analysis** | Anomaly-impact simulator: correction sliders drive live recalculation of net position, variance-to-budget, AR days, liquidity and forecast confidence, with a scenario waterfall. |
 | **Process Flow & RAC House** | Agent orchestration architecture + a runnable agent-execution simulation and full agent roster. |
 
-A **region toggle** (North America / Asia Pacific / International / SCF-Global)
-rescales every module so the whole dashboard stays interactive across regions.
+An **operating-company toggle** (Power Delivery / Gas Distribution / Water Utility /
+Holdco-Consolidated) rescales every module so the whole dashboard stays interactive
+across OpCos. Demo data uses FERC-style utility line items (regulatory assets, CWIP,
+accrued unbilled revenue, storm-cost deferrals, CIAC).
 
 ## Branding
 
-Styled to Standard Industries' *modern industrialism* identity:
+Styled to Avangrid's clean-energy identity:
 
-- **Accent red** `#ed2a37` · **secondary gray** `#91999f` · **graphite** `#1f2328`
-- Industrial grotesque type (Archivo display / Inter UI)
-- Co-branded header lockup (Standard Industries corporate mark + BS Flux Sol product name)
+- **Deep green** `#00402A` · **leaf-green accent** `#00A443` · **blue** `#0063BE` · sage `#A2BCB1`
+- Humanist sans type (Mulish display / Inter UI) approximating Avangrid's IberPangea
+- Header lockup: leaf mark + `avangrid` wordmark alongside the BS Flux Sol product name
 
-The logo mark in `src/components/StandardLogo.jsx` is a brand-aligned
-representation (correct palette + accent), not the trademarked vector artwork.
+The logo in `src/components/AvangridLogo.jsx` is a brand-aligned representation
+(correct palette + leaf mark), not the trademarked vector artwork. To use the official
+logo, save it as `src/assets/avangrid-logo.svg` and swap the mark for an `<img>`.
 Brand elements are included for internal-tool alignment on a synthetic demo.
 
 ## Tech

@@ -20,11 +20,11 @@ const FILTERS = [
 ]
 
 function heatColor(z) {
-  // 0 -> pale blue, ~2 -> amber, >=4 -> red
+  // 0 -> pale green, ~2 -> amber, >=4 -> red
   const t = Math.min(z / 4, 1)
   if (t < 0.5) {
     const k = t / 0.5
-    return mix([219, 234, 254], [245, 158, 11], k)
+    return mix([220, 235, 225], [245, 158, 11], k)
   }
   const k = (t - 0.5) / 0.5
   return mix([245, 158, 11], [220, 38, 38], k)
@@ -162,9 +162,9 @@ export default function AnomalyIntelligence({ region }) {
           <div className="panel-pad">
             {REGIONAL_BENCHMARK.map((b) => {
               const vals = [
-                { r: 'ELEC', v: b.na, c: '#1f2328' },
-                { r: 'GAS', v: b.apac, c: '#91999f' },
-                { r: 'WATER', v: b.intl, c: '#ed2a37' },
+                { r: 'ELEC', v: b.na, c: '#00402A' },
+                { r: 'GAS', v: b.apac, c: '#0063BE' },
+                { r: 'WATER', v: b.intl, c: '#00A443' },
               ]
               const max = Math.max(...vals.map((x) => x.v))
               return (

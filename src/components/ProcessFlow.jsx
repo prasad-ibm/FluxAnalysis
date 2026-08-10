@@ -2,11 +2,11 @@ import { useState, useRef, useEffect } from 'react'
 import { AGENTS } from '../data.js'
 
 const LEGEND = [
-  { c: '#1f2328', l: 'Orchestrator' },
-  { c: '#5b6169', l: 'Data Agents' },
-  { c: '#157347', l: 'Analysis Agents' },
-  { c: '#ed2a37', l: 'Anomaly Detection' },
-  { c: '#7a8087', l: 'AI Commentary' },
+  { c: '#00402A', l: 'Orchestrator' },
+  { c: '#0063BE', l: 'Data Agents' },
+  { c: '#00A443', l: 'Analysis Agents' },
+  { c: '#c62828', l: 'Anomaly Detection' },
+  { c: '#0e8a6e', l: 'AI Commentary' },
   { c: '#b45309', l: 'Governance' },
 ]
 
@@ -28,8 +28,8 @@ const SIM_STEPS = [
 ]
 
 const AGENT_CLS = {
-  orchestrator: '#1f2328', data: '#5b6169', analysis: '#157347',
-  anomaly: '#ed2a37', commentary: '#7a8087', governance: '#b45309',
+  orchestrator: '#00402A', data: '#0063BE', analysis: '#00A443',
+  anomaly: '#c62828', commentary: '#0e8a6e', governance: '#b45309',
 }
 
 export default function ProcessFlow() {

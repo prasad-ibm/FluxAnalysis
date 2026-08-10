@@ -204,16 +204,16 @@ function Waterfall({ baseNet, steps, finalNet }) {
 
   const bars = []
   // baseline
-  bars.push({ i: 0, top: yToPx(baseNet), bot: yToPx(yMin), color: '#94a3b8', label: 'Baseline', val: baseNet, connectFrom: baseNet })
+  bars.push({ i: 0, top: yToPx(baseNet), bot: yToPx(yMin), color: '#A2BCB1', label: 'Baseline', val: baseNet, connectFrom: baseNet })
   let prev = baseNet
   steps.forEach((s, idx) => {
     const start = prev, end = prev + s.delta
     const top = yToPx(Math.max(start, end)), bot = yToPx(Math.min(start, end))
-    bars.push({ i: idx + 1, top, bot: Math.max(bot, top + 2), color: s.delta >= 0 ? '#157347' : '#c1272d', label: shortName(s), val: s.delta, isDelta: true, endLevel: end })
+    bars.push({ i: idx + 1, top, bot: Math.max(bot, top + 2), color: s.delta >= 0 ? '#008737' : '#c62828', label: shortName(s), val: s.delta, isDelta: true, endLevel: end })
     prev = end
   })
   // final
-  bars.push({ i: cols - 1, top: yToPx(finalNet), bot: yToPx(yMin), color: '#1f2328', label: 'Adjusted', val: finalNet })
+  bars.push({ i: cols - 1, top: yToPx(finalNet), bot: yToPx(yMin), color: '#00402A', label: 'Adjusted', val: finalNet })
 
   return (
     <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ maxWidth: '100%' }}>

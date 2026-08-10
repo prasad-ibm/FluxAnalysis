@@ -1,34 +1,38 @@
 :root {
-  /* Standard Industries — modern industrialism palette */
-  --bg: #f4f5f6;
+  /* Avangrid — clean-energy palette */
+  --bg: #f2f6f4;
   --panel: #ffffff;
-  --ink: #17191c;
-  --ink-2: #4a4f55;
-  --ink-3: #91999f;          /* SI brand gray */
-  --line: #e4e6e8;
-  --line-2: #cdd1d4;
-  --brand: #ed2a37;          /* SI brand red */
-  --brand-dark: #c81e2a;
-  --brand-ink: #1f2328;
-  --graphite: #1f2328;       /* near-black industrial */
-  --graphite-2: #2b3036;
-  --gray: #91999f;           /* SI secondary gray */
-  --navy: #1f2328;           /* repurposed to graphite */
-  --pos: #157347;
-  --pos-bg: #e8f4ee;
-  --neg: #c1272d;
-  --neg-bg: #fbeaeb;
-  --neutral: #6f767c;
+  --ink: #10231b;
+  --ink-2: #47564f;
+  --ink-3: #7f938a;          /* sage gray */
+  --line: #e2ebe6;
+  --line-2: #c6d6ce;
+  --brand: #00402A;          /* Avangrid deep green */
+  --brand-dark: #002015;
+  --brand-accent: #00A443;   /* Avangrid leaf green */
+  --brand-blue: #0063BE;     /* Avangrid blue accent */
+  --brand-ink: #00402A;
+  --graphite: #00402A;       /* deep green (dark surfaces) */
+  --graphite-2: #103a2b;
+  --gray: #5f7469;           /* sage-dark (secondary tag) */
+  --sage: #A2BCB1;
+  --pale: #DCEBE1;
+  --navy: #00402A;           /* repurposed to deep green */
+  --pos: #008737;
+  --pos-bg: #e6f4ec;
+  --neg: #c62828;
+  --neg-bg: #fbeaea;
+  --neutral: #6b7c74;
   --amber: #b45309;
   --amber-bg: #fdf3e7;
-  --high: #c1272d;
+  --high: #c62828;
   --med: #b45309;
-  --low: #157347;
-  --shadow: 0 1px 3px rgba(31, 35, 40, 0.08), 0 1px 2px rgba(31, 35, 40, 0.04);
-  --shadow-lg: 0 10px 30px rgba(31, 35, 40, 0.12);
+  --low: #008737;
+  --shadow: 0 1px 3px rgba(0, 32, 21, 0.08), 0 1px 2px rgba(0, 32, 21, 0.05);
+  --shadow-lg: 0 10px 30px rgba(0, 32, 21, 0.14);
   --radius: 12px;
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --display: 'Archivo', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --display: 'Mulish', 'Inter', 'Helvetica Neue', Arial, sans-serif;
   --mono: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
 }
 
@@ -57,20 +61,18 @@ input, textarea, select { font-family: inherit; }
   display: flex; align-items: center; gap: 20px;
 }
 
-/* Standard Industries corporate lockup */
-.si-logo { display: flex; align-items: center; gap: 11px; }
-.si-word { display: flex; flex-direction: column; line-height: 0.98; }
-.si-word .si-l1, .si-word .si-l2 {
-  font-family: var(--display); font-weight: 700; font-size: 15px;
-  letter-spacing: 0.14em; color: var(--gray); text-transform: uppercase;
+/* Avangrid corporate lockup */
+.ava-logo { display: flex; align-items: center; gap: 9px; }
+.ava-word {
+  font-family: var(--display); font-weight: 800; font-size: 24px;
+  letter-spacing: -0.02em; color: var(--brand); line-height: 1;
 }
-.si-word .si-l2 { color: var(--graphite); }
 
 .brand-divider { width: 1px; height: 38px; background: var(--line-2); }
 
 .brand { display: flex; align-items: center; gap: 12px; }
-.brand-name { font-family: var(--display); font-size: 18px; font-weight: 800; letter-spacing: -0.01em; color: var(--graphite); }
-.brand-name .accent { color: var(--brand); }
+.brand-name { font-family: var(--display); font-size: 18px; font-weight: 800; letter-spacing: -0.01em; color: var(--brand); }
+.brand-name .accent { color: var(--brand-accent); }
 .brand-sub { font-size: 11.5px; color: var(--ink-3); margin-top: 2px; font-weight: 500; }
 
 .appbar-spacer { flex: 1; }
@@ -327,7 +329,7 @@ table.flux tr.total td { font-weight: 800; background: #f1f5f9; border-top: 2px 
 .heat-box { height: 54px; border-radius: 8px; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 13px; }
 .heat-lbl { font-size: 10px; color: var(--ink-3); font-family: var(--mono); margin-top: 5px; }
 .heat-scale { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 11px; color: var(--ink-3); }
-.heat-gradient { flex: 1; height: 8px; border-radius: 5px; background: linear-gradient(90deg, #dbeafe, #f59e0b, #dc2626); }
+.heat-gradient { flex: 1; height: 8px; border-radius: 5px; background: linear-gradient(90deg, #dcebe1, #f59e0b, #c62828); }
 
 .trend-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .trend-row:last-child { border-bottom: none; }

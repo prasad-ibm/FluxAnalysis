@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { REGIONS, PERIOD } from './data.js'
-import StandardLogo from './components/StandardLogo.jsx'
+import AvangridLogo from './components/AvangridLogo.jsx'
 import ProcessFlow from './components/ProcessFlow.jsx'
 import FluxAnalysis from './components/FluxAnalysis.jsx'
 import Commentary from './components/Commentary.jsx'
@@ -23,7 +23,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="appbar">
-        <StandardLogo />
+        <AvangridLogo />
         <div className="brand-divider" />
         <div className="brand">
           <div>
@@ -59,8 +59,8 @@ export default function App() {
       </main>
 
       <footer className="foot">
-        <strong style={{ color: 'var(--graphite)', letterSpacing: '0.06em' }}>STANDARD INDUSTRIES</strong>
-        <span style={{ color: 'var(--brand)' }}> ◆ </span>
+        <strong style={{ color: 'var(--brand)' }}>avangrid</strong>
+        <span style={{ color: 'var(--brand-accent)' }}> ● </span>
         Balance Sheet Flux Sol · illustrative demo build · FY2025 Period 12 · figures are synthetic ·
         brand elements shown for internal-tool alignment
       </footer>
