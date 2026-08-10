@@ -8,11 +8,11 @@ import AnomalyIntelligence from './components/AnomalyIntelligence.jsx'
 import WhatIf from './components/WhatIf.jsx'
 
 const TABS = [
-  { id: 'process', label: '🗺 Process Flow & RAC House' },
   { id: 'flux', label: '📊 BS Flux Analysis' },
   { id: 'commentary', label: '💬 Commentary' },
   { id: 'anomaly', label: '⚡ Anomaly Intelligence' },
   { id: 'whatif', label: '🎛 What-If Analysis', pill: 'NEW' },
+  { id: 'process', label: '🗺 Process Flow' },
 ]
 
 export default function App() {
