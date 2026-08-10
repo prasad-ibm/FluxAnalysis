@@ -25,7 +25,7 @@ export default function AvangridLogo() {
   return (
     <div className="ava-logo" title="Avangrid">
       <AvangridLeaf size={30} />
-      <span className="ava-word">avangrid</span>
+      <span className="ava-word">Avangrid</span>
     </div>
   )
 }
