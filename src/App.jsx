@@ -35,8 +35,8 @@ export default function App() {
         <div className="brand-divider" />
         <div className="brand">
           <div>
-            <div className="brand-name">BS Flux <span className="accent">Sol</span></div>
-            <div className="brand-sub">Balance Sheet Flux Reporting</div>
+            <div className="brand-name">Flux <span className="accent">Analysis</span></div>
+            <div className="brand-sub">Financial Variance &amp; Performance Intelligence</div>
           </div>
         </div>
         <div className="appbar-spacer" />
@@ -97,10 +97,15 @@ export default function App() {
       <AiAssistant />
 
       <footer className="foot">
-        <strong style={{ color: 'var(--brand)' }}>Avangrid</strong>
-        <span style={{ color: 'var(--brand-accent)' }}> ● </span>
-        Balance Sheet Flux Sol · illustrative demo build · FY2025 Period 12 · figures are synthetic ·
-        brand elements shown for internal-tool alignment
+        <div>
+          <strong style={{ color: 'var(--brand)' }}>Avangrid</strong>
+          <span style={{ color: 'var(--brand-accent)' }}> ● </span>
+          Flux Analysis · illustrative demo build · FY2025 Period 12 · figures are synthetic ·
+          brand elements shown for internal-tool alignment
+        </div>
+        <div className="foot-sub">
+          Powered by <strong style={{ color: 'var(--brand)' }}>Flux</strong> · statement coverage: P&amp;L (PMR) · Balance Sheet · Cash Flow
+        </div>
       </footer>
     </div>
   )

@@ -406,6 +406,7 @@ table.flux tr.total td { font-weight: 800; background: #f1f5f9; border-top: 2px 
   max-width: 1180px; margin: 0 auto; padding: 20px 28px; color: var(--ink-3); font-size: 12px;
   border-top: 1px solid var(--line); text-align: center;
 }
+.foot-sub { margin-top: 7px; font-size: 11px; color: var(--ink-3); }
 
 /* ---------------- provenance tags (R1) ---------------- */
 .prov {
