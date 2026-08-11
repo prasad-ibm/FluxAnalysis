@@ -82,7 +82,6 @@ export default function App() {
         </div>
         <div className="pmr-chips">
           <span className="pmr-chip role" title="Role-based access control scope">👤 {PMR_META.role}</span>
-          <span className="pmr-chip host" title="Hosting & data-egress posture">🔒 {PMR_META.hosting}</span>
         </div>
       </div>
 
