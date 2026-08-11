@@ -12,7 +12,7 @@ const TABS = [
   { id: 'flux', label: '📊 BS Flux Analysis' },
   { id: 'commentary', label: '💬 Commentary' },
   { id: 'anomaly', label: '⚡ Anomaly Intelligence' },
-  { id: 'whatif', label: '🎛 What-If Analysis', pill: 'NEW' },
+  { id: 'whatif', label: '🎛 What-If Analysis' },
   { id: 'process', label: '🗺 Process Flow' },
 ]
 
