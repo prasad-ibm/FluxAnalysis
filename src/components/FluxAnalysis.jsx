@@ -1,7 +1,6 @@
 import { ACCOUNTS, fmtM, fmtVar, varClass, scale, sourceFor } from '../data.js'
 import { ProvenanceTag, ProvenanceLegend } from './ProvenanceTag.jsx'
 import SourceBadge from './SourceBadge.jsx'
-import ReadinessStrip from './ReadinessStrip.jsx'
 
 export default function FluxAnalysis({ region, pmr }) {
   const basis = pmr?.basis ?? { code: 'BUD', label: 'Budget', field: 'budget' }
@@ -189,8 +188,6 @@ export default function FluxAnalysis({ region, pmr }) {
           </div>
         </div>
       </div>
-
-      <ReadinessStrip />
     </div>
   )
 }
