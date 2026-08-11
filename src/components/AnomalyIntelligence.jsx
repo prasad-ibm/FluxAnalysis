@@ -4,6 +4,7 @@ import {
   fmtM, scale,
 } from '../data.js'
 import Sparkline from './Sparkline.jsx'
+import { ProvenanceTag } from './ProvenanceTag.jsx'
 
 const TAG_META = {
   statistical: { label: 'σ Statistical' },
@@ -72,7 +73,10 @@ export default function AnomalyIntelligence({ region }) {
 
       <div className="panel mt">
         <div className="panel-head">
-          <div className="panel-title">Account-Level Anomaly Breakdown</div>
+          <div className="panel-title">
+            Account-Level Anomaly Breakdown
+            <span style={{ marginLeft: 8 }}><ProvenanceTag kind="calc" small label="figures deterministic" /> <ProvenanceTag kind="ai" small label="AI-ranked" /></span>
+          </div>
           <div className="filters">
             {FILTERS.map(([k, l]) => (
               <button key={k} className={`filter-chip ${filter === k ? 'active' : ''}`} onClick={() => setFilter(k)}>{l}</button>

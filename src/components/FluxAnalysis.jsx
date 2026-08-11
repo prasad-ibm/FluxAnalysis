@@ -1,53 +1,62 @@
-import { useState } from 'react'
-import { ACCOUNTS, fmtM, fmtVar, varClass, scale } from '../data.js'
+import { ACCOUNTS, fmtM, fmtVar, varClass, scale, sourceFor } from '../data.js'
+import { ProvenanceTag, ProvenanceLegend } from './ProvenanceTag.jsx'
+import SourceBadge from './SourceBadge.jsx'
+import ReadinessStrip from './ReadinessStrip.jsx'
 
-export default function FluxAnalysis({ region }) {
-  const [view, setView] = useState('budget') // budget | py | both
-  const [chartView, setChartView] = useState('budget')
-  const f = region.factor
+export default function FluxAnalysis({ region, pmr }) {
+  const basis = pmr?.basis ?? { code: 'BUD', label: 'Budget', field: 'budget' }
+  const period = pmr?.period ?? { code: 'YTD', label: 'YTD', factor: 1 }
+  const f = region.factor * period.factor
+  const actualsLabel = pmr?.type === 'REP' ? 'Reported' : pmr?.type === 'BUD' ? 'Budget/Fcst' : 'Actuals'
 
   const rows = ACCOUNTS.map((a) => {
     const py = scale(a.py, f), actual = scale(a.actual, f), budget = scale(a.budget, f), le = scale(a.le, f)
-    return { ...a, py, actual, budget, le, vBud: actual - budget, vPy: actual - py }
+    const rev = budget + (le - budget) * 0.5
+    const comp = { budget, le, rev, py }[basis.field]
+    return { ...a, py, actual, budget, le, rev, comp, variance: actual - comp, vPy: actual - py }
   })
 
   const totals = rows.reduce(
-    (t, r) => ({ py: t.py + r.py, actual: t.actual + r.actual, budget: t.budget + r.budget, le: t.le + r.le }),
-    { py: 0, actual: 0, budget: 0, le: 0 }
+    (t, r) => ({ py: t.py + r.py, actual: t.actual + r.actual, comp: t.comp + r.comp }),
+    { py: 0, actual: 0, comp: 0 }
   )
-  const totBud = totals.actual - totals.budget
+  const totVar = totals.actual - totals.comp
   const totPy = totals.actual - totals.py
+  const favWord = totVar >= 0 ? 'Favourable' : 'Unfavourable'
 
   const kpis = [
-    { label: 'Total Actuals (USD)', value: fmtM(totals.actual).replace('.0', ''), delta: `▼ ${fmtM(totPy)}`,
-      cls: 'neg', dcls: 'neg', foot: 'FY2025 Period 12 Close' },
-    { label: 'Total Budget', value: fmtM(totals.budget).replace('.0', ''), delta: `▲ ${fmtM(totBud)} above Actuals`,
-      cls: 'pos', dcls: 'pos', foot: 'Annual Budget Target' },
-    { label: 'Actual vs Budget', value: `+${fmtM(totBud)}`, delta: `+${(totBud / totals.budget * 100).toFixed(1)}% Favourable`,
-      cls: 'pos', dcls: 'pos', foot: 'Actuals below Budget (liability view)' },
-    { label: 'Actual vs Prior Year', value: `−${fmtM(Math.abs(totPy))}`, delta: `${(totPy / totals.py * 100).toFixed(1)}% vs PY`,
-      cls: 'neg', dcls: 'neg', foot: `Prior Year End: ${fmtM(totals.py)}` },
+    { label: `Total ${actualsLabel} (USD)`, value: fmtM(totals.actual).replace('.0', ''),
+      delta: `▼ ${fmtM(totPy)} vs PY`, cls: 'neg', dcls: 'neg', foot: 'FY2025 Period 12 · reconciled' },
+    { label: `Total ${basis.label}`, value: fmtM(totals.comp).replace('.0', ''),
+      delta: `${basis.label} basis`, cls: 'pos', dcls: 'pos', foot: `Comparison basis` },
+    { label: `${actualsLabel} vs ${basis.label}`, value: `${totVar >= 0 ? '+' : '−'}${fmtM(Math.abs(totVar))}`,
+      delta: `${(totVar / totals.comp * 100).toFixed(1)}% ${favWord}`, cls: totVar >= 0 ? 'pos' : 'neg',
+      dcls: totVar >= 0 ? 'pos' : 'neg', foot: `${actualsLabel} vs ${basis.label} (liability view)` },
+    { label: `${actualsLabel} vs Prior Year`, value: `−${fmtM(Math.abs(totPy))}`,
+      delta: `${(totPy / totals.py * 100).toFixed(1)}% vs PY`, cls: 'neg', dcls: 'neg',
+      foot: `Prior Year: ${fmtM(totals.py)}` },
   ]
 
-  // chart uses top accounts by absolute actual value
   const chartRows = [...rows].sort((a, b) => Math.abs(b.actual) - Math.abs(a.actual)).slice(0, 8)
-  const maxBar = Math.max(...chartRows.map((r) => Math.max(Math.abs(r.actual), Math.abs(r.budget))))
+  const maxBar = Math.max(...chartRows.map((r) => Math.max(Math.abs(r.actual), Math.abs(r.comp))))
 
-  const favCount = rows.filter((r) => r.vBud >= 0.5).length
-  const unfavCount = rows.filter((r) => r.vBud <= -0.5).length
-  const immCount = rows.filter((r) => Math.abs(r.vBud) < 0.5).length
-  const favSum = rows.filter((r) => r.vBud >= 0.5).reduce((s, r) => s + r.vBud, 0)
-  const unfavSum = rows.filter((r) => r.vBud <= -0.5).reduce((s, r) => s + Math.abs(r.vBud), 0)
+  const favCount = rows.filter((r) => r.variance >= 0.5).length
+  const unfavCount = rows.filter((r) => r.variance <= -0.5).length
+  const immCount = rows.filter((r) => Math.abs(r.variance) < 0.5).length
+  const favSum = rows.filter((r) => r.variance >= 0.5).reduce((s, r) => s + r.variance, 0)
+  const unfavSum = rows.filter((r) => r.variance <= -0.5).reduce((s, r) => s + Math.abs(r.variance), 0)
 
-  const topVars = [...rows].sort((a, b) => Math.abs(b.vBud) - Math.abs(a.vBud)).slice(0, 6)
-  const maxTop = Math.max(...topVars.map((r) => Math.abs(r.vBud)))
+  const topVars = [...rows].sort((a, b) => Math.abs(b.variance) - Math.abs(a.variance)).slice(0, 6)
+  const maxTop = Math.max(...topVars.map((r) => Math.abs(r.variance)))
 
   return (
     <div className="page">
+      <ProvenanceLegend />
+
       <div className="kpis">
         {kpis.map((k) => (
           <div className={`kpi ${k.cls}`} key={k.label}>
-            <div className="kpi-label">{k.label}</div>
+            <div className="kpi-label">{k.label} <ProvenanceTag kind="calc" small /></div>
             <div className="kpi-value">{k.value}</div>
             <div className={`kpi-delta ${k.dcls}`}>{k.delta}</div>
             <div className="kpi-foot">{k.foot}</div>
@@ -60,11 +69,7 @@ export default function FluxAnalysis({ region }) {
           <div className="panel-title">
             <span className="region-tag">{region.name}</span> — Balance Sheet Flux by Account
           </div>
-          <div className="seg">
-            {[['budget', 'Act vs Budget'], ['py', 'Act vs Prior Year'], ['both', 'Both']].map(([v, l]) => (
-              <button key={v} className={view === v ? 'active' : ''} onClick={() => setView(v)}>{l}</button>
-            ))}
-          </div>
+          <span className="recon-badge">✓ Reconciled to PMR · 0 unexplained differences</span>
         </div>
         <div className="tbl-wrap">
           <table className="flux">
@@ -72,43 +77,33 @@ export default function FluxAnalysis({ region }) {
               <tr>
                 <th>Acct Code</th>
                 <th>Account Description</th>
-                <th>Prior Year End</th>
-                <th>Actuals</th>
-                <th>Budget</th>
-                {(view === 'budget' || view === 'both') && <th>Act vs Budget</th>}
-                {(view === 'py' || view === 'both') && <th>Act vs PY</th>}
-                <th>LE</th>
-                <th></th>
+                <th>{actualsLabel}</th>
+                <th>{basis.label}</th>
+                <th>{actualsLabel} vs {basis.label}</th>
+                <th>Source</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r) => (
                 <tr key={r.code}>
                   <td>{r.code}</td>
-                  <td>{r.desc} ›</td>
-                  <td>{fmtM(r.py)}</td>
+                  <td>{r.desc}</td>
                   <td className="actual">{fmtM(r.actual)}</td>
-                  <td>{fmtM(r.budget)}</td>
-                  {(view === 'budget' || view === 'both') && (
-                    <td className={`v-${varClass(r.vBud)}`}>{fmtVar(r.vBud)}</td>
-                  )}
-                  {(view === 'py' || view === 'both') && (
-                    <td className={`v-${varClass(r.vPy)}`}>{fmtVar(r.vPy)}</td>
-                  )}
-                  <td>{fmtM(r.le)}</td>
-                  <td><button className="chip-detail">Detail</button></td>
+                  <td>{fmtM(r.comp)}</td>
+                  <td className={`v-${varClass(r.variance)}`}>
+                    {fmtVar(r.variance)}
+                    <span className="v-pct"> · {r.comp !== 0 ? (r.variance / Math.abs(r.comp) * 100).toFixed(1) : '—'}%</span>
+                  </td>
+                  <td><SourceBadge src={sourceFor(r, region.name, basis.label, period.label)} /></td>
                 </tr>
               ))}
               <tr className="total">
                 <td>Grand Total</td>
                 <td></td>
-                <td>{fmtM(totals.py)}</td>
                 <td>{fmtM(totals.actual)}</td>
-                <td>{fmtM(totals.budget)}</td>
-                {(view === 'budget' || view === 'both') && <td className="v-pos">+{fmtM(totBud)}</td>}
-                {(view === 'py' || view === 'both') && <td className="v-neg">{fmtM(totPy)}</td>}
-                <td>{fmtM(totals.le)}</td>
-                <td></td>
+                <td>{fmtM(totals.comp)}</td>
+                <td className={totVar >= 0 ? 'v-pos' : 'v-neg'}>{totVar >= 0 ? '+' : ''}{fmtM(totVar)}</td>
+                <td><SourceBadge src={sourceFor({ code: 'TOTAL' }, region.name, basis.label, period.label)} label="Tie-out" /></td>
               </tr>
             </tbody>
           </table>
@@ -117,30 +112,21 @@ export default function FluxAnalysis({ region }) {
 
       <div className="panel mt">
         <div className="panel-head">
-          <div className="panel-title">Visual Analytics</div>
-          <div className="seg">
-            {[['budget', 'Act vs Budget'], ['py', 'Act vs Prior Year']].map(([v, l]) => (
-              <button key={v} className={chartView === v ? 'active' : ''} onClick={() => setChartView(v)}>{l}</button>
-            ))}
-          </div>
+          <div className="panel-title">Visual Analytics <ProvenanceTag kind="calc" small /></div>
+          <div className="panel-note">{actualsLabel} vs {basis.label} · top accounts · {period.label}</div>
         </div>
         <div className="chart-area">
-          <div className="panel-note" style={{ marginBottom: 10 }}>
-            Actuals vs {chartView === 'budget' ? 'Budget' : 'Prior Year'} — Top Accounts (USD) · hover a bar for detail
-          </div>
           <div className="bars">
             {chartRows.map((r) => {
-              const comp = chartView === 'budget' ? r.budget : r.py
-              const bH = Math.max(2, (Math.abs(comp) / maxBar) * 190)
+              const bH = Math.max(2, (Math.abs(r.comp) / maxBar) * 190)
               const aH = Math.max(2, (Math.abs(r.actual) / maxBar) * 190)
-              const fav = (chartView === 'budget' ? r.vBud : r.vPy) >= 0
+              const fav = r.variance >= 0
               return (
                 <div className="bar-col" key={r.code}>
                   <div className="bar-stack">
-                    <div className="bar budget" style={{ height: bH }}
-                      title={`${chartView === 'budget' ? 'Budget' : 'PY'}: ${fmtM(comp)}`} />
+                    <div className="bar budget" style={{ height: bH }} title={`${basis.label}: ${fmtM(r.comp)}`} />
                     <div className={`bar ${fav ? 'act-pos' : 'act-neg'}`} style={{ height: aH }}
-                      title={`Actual: ${fmtM(r.actual)}`} />
+                      title={`${actualsLabel}: ${fmtM(r.actual)}`} />
                   </div>
                   <div className="bar-label">{r.code}</div>
                 </div>
@@ -148,9 +134,9 @@ export default function FluxAnalysis({ region }) {
             })}
           </div>
           <div className="legend">
-            <span><i className="dot" style={{ background: '#cbd5e1' }} /> {chartView === 'budget' ? 'Budget' : 'Prior Year'}</span>
-            <span><i className="dot" style={{ background: 'var(--pos)' }} /> Actual (Favourable)</span>
-            <span><i className="dot" style={{ background: 'var(--neg)' }} /> Actual (Unfavourable)</span>
+            <span><i className="dot" style={{ background: 'var(--sage)' }} /> {basis.label}</span>
+            <span><i className="dot" style={{ background: 'var(--pos)' }} /> {actualsLabel} (Favourable)</span>
+            <span><i className="dot" style={{ background: 'var(--neg)' }} /> {actualsLabel} (Unfavourable)</span>
           </div>
         </div>
       </div>
@@ -158,7 +144,7 @@ export default function FluxAnalysis({ region }) {
       <div className="two-col mt">
         <div className="panel">
           <div className="panel-head"><div className="panel-title">Variance Summary</div>
-            <div className="panel-note">Act vs Budget — by account count</div></div>
+            <div className="panel-note">{actualsLabel} vs {basis.label} — by account count</div></div>
           <div className="panel-pad">
             <div className="summary-row">
               <div className="summary-cell">
@@ -181,12 +167,12 @@ export default function FluxAnalysis({ region }) {
         </div>
 
         <div className="panel">
-          <div className="panel-head"><div className="panel-title">Top Variances — Act vs Budget</div></div>
+          <div className="panel-head"><div className="panel-title">Top Variances — {actualsLabel} vs {basis.label}</div></div>
           <div className="panel-pad">
             <div className="topvar">
               {topVars.map((r) => {
-                const pos = r.vBud >= 0
-                const w = (Math.abs(r.vBud) / maxTop) * 100
+                const pos = r.variance >= 0
+                const w = maxTop ? (Math.abs(r.variance) / maxTop) * 100 : 0
                 return (
                   <div className="topvar-row" key={r.code}>
                     <div className="topvar-name">{shortName(r.desc)}</div>
@@ -194,7 +180,7 @@ export default function FluxAnalysis({ region }) {
                       <div className="topvar-fill" style={{ width: `${w}%`, background: pos ? 'var(--pos)' : 'var(--neg)' }} />
                     </div>
                     <div className="topvar-amt" style={{ color: pos ? 'var(--pos)' : 'var(--neg)' }}>
-                      {pos ? '+' : '-'}{fmtM(Math.abs(r.vBud))}
+                      {pos ? '+' : '-'}{fmtM(Math.abs(r.variance))}
                     </div>
                   </div>
                 )
@@ -203,6 +189,8 @@ export default function FluxAnalysis({ region }) {
           </div>
         </div>
       </div>
+
+      <ReadinessStrip />
     </div>
   )
 }

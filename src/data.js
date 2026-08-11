@@ -235,6 +235,95 @@ export const AGENTS = [
 ]
 
 // ---------------------------------------------------------------------------
+// Governance / PMR provenance (trust-signal layer)
+// ---------------------------------------------------------------------------
+
+export const PMR_META = {
+  repository: 'Avangrid PMR Repository',
+  file: 'Networks_PMR_2025_P12.xlsx',
+  version: 'v4 · approved 2026-07-15',
+  owner: 'Networks FP&A',
+  hosting: 'Avangrid-hosted · US East · no external egress',
+  role: 'Networks Controller',
+}
+
+export const PMR_TYPES = [
+  { code: 'ACT', label: 'Actual PMR' },
+  { code: 'REP', label: 'Reported PMR' },
+  { code: 'BUD', label: 'Budget / Forecast PMR' },
+]
+
+// field = which account column supplies the comparison value ('rev' derived).
+export const COMPARISON_BASES = [
+  { code: 'BUD', label: 'Budget', field: 'budget' },
+  { code: 'FCT', label: 'Forecast', field: 'le' },
+  { code: 'REV', label: 'Revisions', field: 'rev' },
+  { code: 'PY', label: 'Prior Year', field: 'py' },
+]
+
+export const PERIOD_BASES = [
+  { code: 'YTD', label: 'YTD', factor: 1.0 },
+  { code: 'MOM', label: 'MoM', factor: 0.085 },
+  { code: 'QOQ', label: 'QoQ', factor: 0.25 },
+  { code: 'FY', label: 'Full Year', factor: 1.0 },
+]
+
+// Deterministic (illustrative) spreadsheet cell for an account code.
+export function cellFor(code) {
+  const digits = code.replace(/\D/g, '')
+  const row = 20 + (parseInt(digits.slice(-3), 10) % 60)
+  return `Col N · Row ${row}`
+}
+
+export function sourceFor(account, regionName, basisLabel, periodLabel) {
+  return {
+    file: PMR_META.file,
+    version: PMR_META.version,
+    tab: `${regionName} · GAAP P&L`,
+    line: `Line ${account.code}`,
+    cell: cellFor(account.code),
+    period: `${periodLabel} · FY2025 P12`,
+    basis: `Actual vs ${basisLabel}`,
+  }
+}
+
+// Four acceptance gates (from the delivery model). status: shown | partial | target
+export const ACCEPTANCE_GATES = [
+  { key: 'accuracy', name: 'Financial Accuracy & Reconciliation', icon: '🎯', status: 'shown',
+    demo: 'Reconciled · 0 unexplained differences',
+    detail: '100% of figures tie to the approved PMR within rounding.' },
+  { key: 'trace', name: 'Source Traceability', icon: '🔗', status: 'shown',
+    demo: '100% source-linked · file · version · tab · cell',
+    detail: 'Every number drills back to a Finance-verifiable source.' },
+  { key: 'guardrails', name: 'Guardrails & Security', icon: '🔒', status: 'partial',
+    demo: 'RBAC scope · clarifies / abstains',
+    detail: 'Ambiguity → clarify; unsupported → abstain; no data egress.' },
+  { key: 'readiness', name: 'Quality & Readiness', icon: '✅', status: 'target',
+    demo: 'Monitoring · runbook · handoff',
+    detail: 'Finance sign-off, monitoring, recovery, support & handoff.' },
+]
+
+// AI Assistant demonstration scenarios — answer / clarify / abstain.
+export const ASSISTANT_SCENARIOS = [
+  {
+    q: 'What drove the Customer AR variance vs budget?',
+    kind: 'answer',
+    a: 'Customer Accounts Receivable is +$4.9M (22.3%) vs Budget. Budget assumed a $5M large industrial-customer settlement that shifted into the next period. The figure is a deterministic calculation; the driver is drawn from the approved P12 commentary.',
+    source: { file: PMR_META.file, version: PMR_META.version, tab: 'Networks · GAAP P&L', line: 'Line 142', cell: 'Col N · Row 42', basis: 'Actual vs Budget' },
+  },
+  {
+    q: 'How is margin trending?',
+    kind: 'clarify',
+    a: 'That question is ambiguous. Please specify: (a) entity / OpCo (e.g., NYSEG, CMP, Networks consolidated), (b) comparison basis (Budget, Forecast, Revisions, Prior Year), and (c) period basis (YTD, MoM, QoQ). I will not infer these.',
+  },
+  {
+    q: 'What will net income be next quarter?',
+    kind: 'abstain',
+    a: 'Insufficient data. A forward net-income projection is outside the approved PMR scope loaded for this period. I return facts traceable to the PMR and do not generate forecasts that are not in an approved Budget/Forecast PMR.',
+  },
+]
+
+// ---------------------------------------------------------------------------
 // Formatting helpers
 // ---------------------------------------------------------------------------
 

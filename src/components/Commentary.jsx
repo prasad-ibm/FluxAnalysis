@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { COMMENTARY, fmtVar, varClass, scale } from '../data.js'
+import { ProvenanceTag } from './ProvenanceTag.jsx'
 
 export default function Commentary({ region }) {
   const f = region.factor
@@ -102,6 +103,7 @@ export default function Commentary({ region }) {
                   <div className="cmt-col-head">
                     <span className="cmt-tag bud">BUD</span>
                     <span className="cmt-col-lbl">Explanation vs Budget</span>
+                    <ProvenanceTag kind="ai" small />
                   </div>
                   <textarea
                     className="cmt-textarea"
@@ -118,6 +120,7 @@ export default function Commentary({ region }) {
                   <div className="cmt-col-head">
                     <span className="cmt-tag py">PY</span>
                     <span className="cmt-col-lbl">Explanation vs Prior Year</span>
+                    <ProvenanceTag kind="ai" small />
                   </div>
                   <textarea
                     className="cmt-textarea"
