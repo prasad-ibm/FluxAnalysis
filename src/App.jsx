@@ -9,7 +9,7 @@ import WhatIf from './components/WhatIf.jsx'
 import AiAssistant from './components/AiAssistant.jsx'
 
 const TABS = [
-  { id: 'flux', label: '📊 BS Flux Analysis' },
+  { id: 'flux', label: '📊 Flux Analysis' },
   { id: 'commentary', label: '💬 Commentary' },
   { id: 'anomaly', label: '⚡ Anomaly Intelligence' },
   { id: 'whatif', label: '🎛 What-If Analysis' },
